@@ -32,7 +32,7 @@ def open_folder(path: Path):
         else:
             subprocess.Popen(["open", str(path)])
     except Exception as e:
-        messagebox.showwarning("Ouverture du dossier", f"Impossible d'ouvrir le dossier :\n{e}")
+        messagebox.showwarning("Open Folder", f"Unable to open the folder:\n{e}")
 
 
 def extract_video_id_from_url(url: str) -> str | None:
@@ -80,7 +80,7 @@ def url_has_playlist(url: str) -> bool:
 def resolve_mode(url: str, selected_mode: str) -> str:
     if selected_mode == "Playlist":
         return "playlist"
-    if selected_mode == "Vidéo unique":
+    if selected_mode == "Single video":
         return "video"
 
     # Auto
@@ -92,7 +92,7 @@ def resolve_mode(url: str, selected_mode: str) -> str:
     if has_playlist:
         return "playlist"
 
-    raise ValueError("Impossible de déterminer automatiquement si l'URL correspond à une vidéo ou une playlist.")
+    raise ValueError("Unable to automatically determine whether the URL points to a video or a playlist.")
 
 
 class ThumbnailDownloaderApp:
@@ -114,9 +114,9 @@ class ThumbnailDownloaderApp:
         self.overwrite_var = tk.BooleanVar(value=False)
         self.open_folder_var = tk.BooleanVar(value=True)
 
-        self.status_var = tk.StringVar(value="Prêt.")
+        self.status_var = tk.StringVar(value="Ready.")
         self.progress_text_var = tk.StringVar(value="0 / 0")
-        self.current_item_var = tk.StringVar(value="Aucun traitement en cours.")
+        self.current_item_var = tk.StringVar(value="No task in progress.")
 
         self.total_items = 0
         self.processed_items = 0
@@ -174,7 +174,7 @@ class ThumbnailDownloaderApp:
         ttk.Label(header, text=APP_NAME, style="Header.TLabel").grid(row=0, column=0, sticky="w")
         ttk.Label(
             header,
-            text="Télécharge la meilleure miniature disponible depuis une vidéo unique ou une playlist YouTube.",
+            text="Download the best public thumbnail available from a single video or a YouTube playlist.",
             style="SubHeader.TLabel"
         ).grid(row=1, column=0, sticky="w", pady=(4, 0))
 
@@ -188,27 +188,27 @@ class ThumbnailDownloaderApp:
         top_card.grid_columnconfigure(1, weight=1)
         top_card.grid_columnconfigure(3, weight=0)
 
-        ttk.Label(top_card, text="Paramètres", style="CardTitle.TLabel").grid(row=0, column=0, columnspan=4, sticky="w", pady=(0, 14))
+        ttk.Label(top_card, text="Settings", style="CardTitle.TLabel").grid(row=0, column=0, columnspan=4, sticky="w", pady=(0, 14))
 
-        ttk.Label(top_card, text="URL YouTube :", style="Muted.TLabel").grid(row=1, column=0, sticky="w", pady=(0, 8))
+        ttk.Label(top_card, text="YouTube URL:", style="Muted.TLabel").grid(row=1, column=0, sticky="w", pady=(0, 8))
         self.url_entry = ttk.Entry(top_card, textvariable=self.url_var)
         self.url_entry.grid(row=1, column=1, columnspan=3, sticky="ew", padx=(12, 0), pady=(0, 8), ipady=6)
 
-        ttk.Label(top_card, text="Mode :", style="Muted.TLabel").grid(row=2, column=0, sticky="w", pady=(0, 8))
+        ttk.Label(top_card, text="Mode:", style="Muted.TLabel").grid(row=2, column=0, sticky="w", pady=(0, 8))
         self.mode_combo = ttk.Combobox(
             top_card,
             textvariable=self.mode_var,
-            values=["Auto", "Vidéo unique", "Playlist"],
+            values=["Auto", "Single video", "Playlist"],
             state="readonly"
         )
         self.mode_combo.grid(row=2, column=1, sticky="w", padx=(12, 10), pady=(0, 8))
         self.mode_combo.configure(width=20)
 
-        ttk.Label(top_card, text="Dossier de destination :", style="Muted.TLabel").grid(row=3, column=0, sticky="w", pady=(0, 8))
+        ttk.Label(top_card, text="Output folder:", style="Muted.TLabel").grid(row=3, column=0, sticky="w", pady=(0, 8))
         self.dir_entry = ttk.Entry(top_card, textvariable=self.output_dir_var)
         self.dir_entry.grid(row=3, column=1, columnspan=2, sticky="ew", padx=(12, 10), pady=(0, 8), ipady=6)
 
-        self.browse_btn = ttk.Button(top_card, text="Parcourir", style="Secondary.TButton", command=self.browse_output_dir)
+        self.browse_btn = ttk.Button(top_card, text="Browse", style="Secondary.TButton", command=self.browse_output_dir)
         self.browse_btn.grid(row=3, column=3, sticky="e", pady=(0, 8))
 
         options_frame = ttk.Frame(top_card, style="Card.TFrame")
@@ -219,13 +219,13 @@ class ThumbnailDownloaderApp:
 
         ttk.Checkbutton(
             options_frame,
-            text="Écraser les fichiers existants",
+            text="Overwrite existing files",
             variable=self.overwrite_var
         ).grid(row=0, column=0, sticky="w")
 
         ttk.Checkbutton(
             options_frame,
-            text="Ouvrir le dossier à la fin",
+            text="Open folder when finished",
             variable=self.open_folder_var
         ).grid(row=0, column=1, sticky="w")
 
@@ -236,14 +236,14 @@ class ThumbnailDownloaderApp:
         actions.grid_columnconfigure(2, weight=1)
         actions.grid_columnconfigure(3, weight=0)
 
-        self.start_btn = ttk.Button(actions, text="Lancer", style="Primary.TButton", command=self.start_download)
+        self.start_btn = ttk.Button(actions, text="Start", style="Primary.TButton", command=self.start_download)
         self.start_btn.grid(row=0, column=0, sticky="w")
 
-        self.stop_btn = ttk.Button(actions, text="Arrêter", style="Secondary.TButton", command=self.request_stop)
+        self.stop_btn = ttk.Button(actions, text="Stop", style="Secondary.TButton", command=self.request_stop)
         self.stop_btn.grid(row=0, column=1, sticky="w", padx=(10, 0))
         self.stop_btn.state(["disabled"])
 
-        self.clear_log_btn = ttk.Button(actions, text="Vider le journal", style="Secondary.TButton", command=self.clear_log)
+        self.clear_log_btn = ttk.Button(actions, text="Clear log", style="Secondary.TButton", command=self.clear_log)
         self.clear_log_btn.grid(row=0, column=3, sticky="e")
 
         bottom = ttk.Frame(main)
@@ -255,7 +255,7 @@ class ThumbnailDownloaderApp:
         progress_card.grid(row=0, column=0, sticky="ew", pady=(0, 14))
         progress_card.grid_columnconfigure(0, weight=1)
 
-        ttk.Label(progress_card, text="Progression", style="CardTitle.TLabel").grid(row=0, column=0, sticky="w")
+        ttk.Label(progress_card, text="Progress", style="CardTitle.TLabel").grid(row=0, column=0, sticky="w")
         ttk.Label(progress_card, textvariable=self.current_item_var, style="Muted.TLabel").grid(row=1, column=0, sticky="w", pady=(10, 8))
 
         progress_line = ttk.Frame(progress_card, style="Card.TFrame")
@@ -274,13 +274,13 @@ class ThumbnailDownloaderApp:
         self.total_label = ttk.Label(stats_frame, text="Total : 0", style="Muted.TLabel")
         self.total_label.grid(row=0, column=0, sticky="w")
 
-        self.processed_label = ttk.Label(stats_frame, text="Traitées : 0", style="Muted.TLabel")
+        self.processed_label = ttk.Label(stats_frame, text="Processed: 0", style="Muted.TLabel")
         self.processed_label.grid(row=0, column=1, sticky="w")
 
-        self.ok_label = ttk.Label(stats_frame, text="Téléchargées : 0", style="Muted.TLabel")
+        self.ok_label = ttk.Label(stats_frame, text="Downloaded: 0", style="Muted.TLabel")
         self.ok_label.grid(row=0, column=2, sticky="w")
 
-        self.skip_label = ttk.Label(stats_frame, text="Ignorées : 0", style="Muted.TLabel")
+        self.skip_label = ttk.Label(stats_frame, text="Skipped: 0", style="Muted.TLabel")
         self.skip_label.grid(row=0, column=3, sticky="w")
 
         log_card = ttk.Frame(bottom, style="Card.TFrame", padding=18)
@@ -288,7 +288,7 @@ class ThumbnailDownloaderApp:
         log_card.grid_columnconfigure(0, weight=1)
         log_card.grid_rowconfigure(1, weight=1)
 
-        ttk.Label(log_card, text="Journal", style="CardTitle.TLabel").grid(row=0, column=0, sticky="w", pady=(0, 10))
+        ttk.Label(log_card, text="Log", style="CardTitle.TLabel").grid(row=0, column=0, sticky="w", pady=(0, 10))
 
         log_container = tk.Frame(log_card, bg="#0d1016", highlightthickness=1, highlightbackground="#252c39")
         log_container.grid(row=1, column=0, sticky="nsew")
@@ -318,7 +318,7 @@ class ThumbnailDownloaderApp:
         ttk.Label(footer, textvariable=self.status_var, style="SubHeader.TLabel").grid(row=0, column=0, sticky="w")
 
     def browse_output_dir(self):
-        selected = filedialog.askdirectory(title="Choisir un dossier de destination")
+        selected = filedialog.askdirectory(title="Choose an output folder")
         if selected:
             self.output_dir_var.set(selected)
 
@@ -350,9 +350,9 @@ class ThumbnailDownloaderApp:
 
     def update_stats(self):
         self.total_label.config(text=f"Total : {self.total_items}")
-        self.processed_label.config(text=f"Traitées : {self.processed_items}")
-        self.ok_label.config(text=f"Téléchargées : {self.downloaded_items}")
-        self.skip_label.config(text=f"Ignorées : {self.skipped_items}")
+        self.processed_label.config(text=f"Processed: {self.processed_items}")
+        self.ok_label.config(text=f"Downloaded: {self.downloaded_items}")
+        self.skip_label.config(text=f"Skipped: {self.skipped_items}")
         self.progress["maximum"] = max(1, self.total_items)
         self.progress["value"] = self.processed_items
         self.progress_text_var.set(f"{self.processed_items} / {self.total_items}")
@@ -360,8 +360,8 @@ class ThumbnailDownloaderApp:
     def request_stop(self):
         if self.is_running:
             self.stop_requested = True
-            self.status_var.set("Arrêt demandé...")
-            self.log("Demande d'arrêt reçue. Fin du traitement en cours...")
+            self.status_var.set("Stop requested...")
+            self.log("Stop request received. Finishing the current item...")
 
     def start_download(self):
         input_url = self.url_var.get().strip()
@@ -369,23 +369,23 @@ class ThumbnailDownloaderApp:
         selected_mode = self.mode_var.get().strip()
 
         if not input_url:
-            messagebox.showerror("URL manquante", "Merci de coller une URL YouTube.")
+            messagebox.showerror("Missing URL", "Please paste a YouTube URL.")
             return
 
         if not output_dir:
-            messagebox.showerror("Dossier manquant", "Merci de choisir un dossier de destination.")
+            messagebox.showerror("Missing folder", "Please choose an output folder.")
             return
 
         try:
             actual_mode = resolve_mode(input_url, selected_mode)
         except Exception as e:
-            messagebox.showerror("Mode impossible à déterminer", str(e))
+            messagebox.showerror("Could not determine mode", str(e))
             return
 
         try:
             Path(output_dir).mkdir(parents=True, exist_ok=True)
         except Exception as e:
-            messagebox.showerror("Erreur dossier", f"Impossible de créer/ouvrir le dossier :\n{e}")
+            messagebox.showerror("Folder error", f"Unable to create/open the folder:\n{e}")
             return
 
         self.stop_requested = False
@@ -395,17 +395,17 @@ class ThumbnailDownloaderApp:
         self.skipped_items = 0
         self.last_output_dir = None
 
-        self.current_item_var.set("Préparation...")
-        self.status_var.set("Téléchargement en cours...")
+        self.current_item_var.set("Preparing...")
+        self.status_var.set("Downloading...")
         self.update_stats()
         self.set_running_state(True)
 
         self.log("=" * 74)
-        self.log(f"Démarrage du téléchargement | Version {APP_VERSION}")
+        self.log(f"Download started | Version {APP_VERSION}")
         self.log(f"URL      : {input_url}")
         self.log(f"Mode     : {actual_mode}")
-        self.log(f"Dossier  : {output_dir}")
-        self.log(f"Écraser  : {'Oui' if self.overwrite_var.get() else 'Non'}")
+        self.log(f"Folder   : {output_dir}")
+        self.log(f"Overwrite: {'Yes' if self.overwrite_var.get() else 'No'}")
 
         worker = threading.Thread(
             target=self._download_worker,
@@ -453,20 +453,20 @@ class ThumbnailDownloaderApp:
                     self.set_running_state(False)
 
                     if info.get("stopped"):
-                        self.status_var.set("Téléchargement interrompu.")
-                        self.current_item_var.set("Traitement interrompu par l'utilisateur.")
+                        self.status_var.set("Download stopped.")
+                        self.current_item_var.set("Processing stopped by user.")
                     else:
-                        self.status_var.set("Téléchargement terminé.")
-                        self.current_item_var.set("Terminé.")
+                        self.status_var.set("Download complete.")
+                        self.current_item_var.set("Done.")
 
                     if info.get("open_folder") and info.get("folder"):
                         open_folder(Path(info["folder"]))
 
                 elif kind == "error":
                     self.set_running_state(False)
-                    self.status_var.set("Erreur.")
-                    self.current_item_var.set("Une erreur s'est produite.")
-                    messagebox.showerror("Erreur", str(data))
+                    self.status_var.set("Error.")
+                    self.current_item_var.set("An error occurred.")
+                    messagebox.showerror("Error", str(data))
 
         except queue.Empty:
             pass
@@ -508,7 +508,7 @@ class ThumbnailDownloaderApp:
         if actual_mode == "playlist":
             info = self._extract_playlist_info(input_url)
             if not info:
-                raise RuntimeError("Impossible de lire la playlist.")
+                raise RuntimeError("Unable to read the playlist.")
 
             playlist_title = clean_filename(info.get("title", "Playlist"))
             entries = [entry for entry in (info.get("entries") or []) if entry]
@@ -530,7 +530,7 @@ class ThumbnailDownloaderApp:
         if actual_mode == "video":
             video_id = extract_video_id_from_url(input_url)
             if not video_id:
-                raise RuntimeError("Impossible d'extraire l'identifiant de la vidéo depuis l'URL.")
+                raise RuntimeError("Unable to extract the video ID from the URL.")
 
             title = self._fetch_video_title(session, video_id)
 
@@ -544,7 +544,7 @@ class ThumbnailDownloaderApp:
                 }],
             }
 
-        raise RuntimeError("Mode invalide.")
+        raise RuntimeError("Invalid mode.")
 
     def _download_best_thumbnail(self, session: requests.Session, video_id: str, dest_base: Path):
         candidates = [
@@ -603,9 +603,9 @@ class ThumbnailDownloaderApp:
             local_ok = 0
             local_skip = 0
 
-            self._queue_put("status", "Analyse en cours...")
-            self._queue_put("current_item", "Lecture des informations...")
-            self._queue_put("log", "Préparation de la session réseau...")
+            self._queue_put("status", "Analyzing...")
+            self._queue_put("current_item", "Reading information...")
+            self._queue_put("log", "Preparing network session...")
 
             session = requests.Session()
             session.headers.update({
@@ -613,7 +613,7 @@ class ThumbnailDownloaderApp:
                 "Referer": "https://www.youtube.com/",
             })
 
-            self._queue_put("log", f"Résolution du mode : {actual_mode}")
+            self._queue_put("log", f"Resolved mode: {actual_mode}")
             target_info = self._resolve_targets(input_url, actual_mode, session)
 
             collection_title = target_info["collection_title"]
@@ -628,22 +628,22 @@ class ThumbnailDownloaderApp:
             final_dir.mkdir(parents=True, exist_ok=True)
 
             self._queue_put("set_total", len(items))
-            self._queue_put("log", f"Éléments détectés : {len(items)}")
-            self._queue_put("log", f"Dossier final     : {final_dir}")
+            self._queue_put("log", f"Items detected: {len(items)}")
+            self._queue_put("log", f"Final folder  : {final_dir}")
 
             for item in items:
                 if self.stop_requested:
-                    self._queue_put("log", "Arrêt demandé par l'utilisateur.")
+                    self._queue_put("log", "Stop requested by user.")
                     break
 
                 index = item["index"]
                 video_id = item["video_id"]
                 title = item["title"] or f"video_{index:03d}"
 
-                self._queue_put("current_item", f"Traitement : {index}/{len(items)} | {title}")
+                self._queue_put("current_item", f"Processing: {index}/{len(items)} | {title}")
 
                 if not video_id:
-                    self._queue_put("log", f"[SKIP] {index:03d} - {title} -> ID vidéo introuvable")
+                    self._queue_put("log", f"[SKIP] {index:03d} - {title} -> video ID not found")
                     local_processed += 1
                     local_skip += 1
                     self._queue_put("inc_processed")
@@ -661,7 +661,7 @@ class ThumbnailDownloaderApp:
                 existing_files = list(final_dir.glob(base_name + ".*"))
 
                 if existing_files and not overwrite:
-                    self._queue_put("log", f"[SKIP] {existing_files[0].name} -> déjà présent")
+                    self._queue_put("log", f"[SKIP] {existing_files[0].name} -> already exists")
                     local_processed += 1
                     local_skip += 1
                     self._queue_put("inc_processed")
@@ -681,13 +681,13 @@ class ThumbnailDownloaderApp:
                     break
 
                 if saved_file:
-                    self._queue_put("log", f"[OK]   {saved_file.name} -> qualité {quality_label}")
+                    self._queue_put("log", f"[OK]   {saved_file.name} -> quality {quality_label}")
                     local_processed += 1
                     local_ok += 1
                     self._queue_put("inc_processed")
                     self._queue_put("inc_ok")
                 else:
-                    self._queue_put("log", f"[SKIP] {title} -> aucune miniature récupérée")
+                    self._queue_put("log", f"[SKIP] {title} -> no thumbnail downloaded")
                     local_processed += 1
                     local_skip += 1
                     self._queue_put("inc_processed")
@@ -697,13 +697,13 @@ class ThumbnailDownloaderApp:
 
             self._queue_put("log", "-" * 74)
             self._queue_put("log", f"Mode          : {actual_mode}")
-            self._queue_put("log", f"Nom           : {collection_title}")
-            self._queue_put("log", f"Dossier       : {final_dir}")
+            self._queue_put("log", f"Name          : {collection_title}")
+            self._queue_put("log", f"Folder        : {final_dir}")
             self._queue_put("log", f"Total         : {len(items)}")
-            self._queue_put("log", f"Traitées      : {local_processed}")
-            self._queue_put("log", f"Téléchargées  : {local_ok}")
-            self._queue_put("log", f"Ignorées      : {local_skip}")
-            self._queue_put("log", "Fin du traitement.")
+            self._queue_put("log", f"Processed     : {local_processed}")
+            self._queue_put("log", f"Downloaded    : {local_ok}")
+            self._queue_put("log", f"Skipped       : {local_skip}")
+            self._queue_put("log", "Processing finished.")
 
             self._queue_put("done", {
                 "folder": str(final_dir),
