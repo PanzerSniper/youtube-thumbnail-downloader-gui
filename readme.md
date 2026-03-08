@@ -74,10 +74,8 @@ This tool is useful for:
 
 ## Screenshots
 
-> Add your screenshots in `assets/` and replace the filenames below.
-
 <p align="center">
-  <img src="assets/screenshot-main.png" alt="Main interface screenshot" width="90%">
+  <img src="assets/AppPreviewV0.4.1.gif" alt="Main interface screenshot" width="90%">
 </p>
 
 ## Project structure
