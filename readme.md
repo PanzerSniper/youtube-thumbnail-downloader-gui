@@ -37,6 +37,10 @@
 
 The app does not download video files. It only fetches the public thumbnail image exposed by YouTube in the best format and quality it can find.
 
+## AI Notice
+
+This project was created with AI assistance during its design, implementation, and iteration.
+
 ## Features
 
 - Modern Tkinter desktop interface
