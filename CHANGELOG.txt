@@ -1,0 +1,38 @@
+YouTube Thumbnail Downloader
+CHANGELOG
+
+Version 0.4.1
+- Correction de l'affichage du menu déroulant du mode
+- Harmonisation des couleurs du texte et du fond de la liste déroulante
+
+Version 0.4
+- Ajout du support vidéo unique
+- Ajout du support playlist
+- Ajout du mode Auto
+- Détection automatique du type d'URL
+- Téléchargement possible d'une seule miniature sans passer par une playlist
+- Les vidéos uniques sont enregistrées directement dans le dossier choisi
+- Les playlists sont enregistrées dans un sous-dossier dédié
+
+Version 0.3
+- Ajout d'une interface graphique Tkinter plus propre et plus moderne
+- Ajout d'un champ URL
+- Ajout d'un sélecteur de dossier de destination
+- Ajout d'une barre de progression
+- Ajout d'un journal intégré dans la fenêtre
+- Ajout des statistiques : total, traitées, téléchargées, ignorées
+- Ajout d'une option pour écraser les fichiers existants
+- Ajout d'une option pour ouvrir le dossier de sortie à la fin
+- Ajout d'un bouton pour arrêter proprement le traitement
+- Utilisation de yt-dlp en mode flat playlist pour éviter l'extraction complète des vidéos
+
+Version 0.2
+- Ajout d'un mode interactif
+- Saisie de l'URL au lancement
+- Saisie du dossier de destination au lancement
+- Téléchargement de la meilleure miniature trouvée
+
+Version 0.1
+- Première version fonctionnelle
+- Téléchargement automatique des miniatures YouTube
+- Génération automatique des noms de fichiers propres
