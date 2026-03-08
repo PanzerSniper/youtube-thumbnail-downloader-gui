@@ -1,11 +1,11 @@
 # YouTube Thumbnail Downloader GUI
 
 <p align="center">
-  <img src="assets/AppPreviewV0.4.1.png" alt="YouTube Thumbnail Downloader GUI banner" width="100%">
+  <img src="assets/AppPreviewV0.4.1.png" alt="YouTube Thumbnail Downloader GUI preview" width="100%">
 </p>
 
 <p align="center">
-  <strong>Modern Python desktop app to download the best public YouTube thumbnail from a single video or an entire playlist.</strong>
+  <strong>Desktop app built with Python and Tkinter to download the best public YouTube thumbnail from a single video or an entire playlist.</strong>
 </p>
 
 <p align="center">
@@ -13,144 +13,100 @@
   <a href="#screenshots">Screenshots</a> •
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a> •
-  <a href="#build-a-windows-exe">Build</a> •
-  <a href="#roadmap">Roadmap</a>
+  <a href="#supported-urls">Supported URLs</a> •
+  <a href="#build-a-windows-exe">Build</a>
 </p>
 
 <p align="center">
-  <img alt="Python" src="https://img.shields.io/badge/Python-3.11%2B-blue">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-blue">
   <img alt="Platform" src="https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-24292f">
   <img alt="GUI" src="https://img.shields.io/badge/GUI-Tkinter-5d8cff">
-  <img alt="Status" src="https://img.shields.io/badge/Status-Active-success">
+  <img alt="Version" src="https://img.shields.io/badge/Version-0.4.1-success">
 </p>
 
 ## Overview
 
-**YouTube Thumbnail Downloader GUI** is a clean and practical desktop application built with **Python**, **Tkinter**, **requests**, and **yt-dlp**. It lets you download the **best public thumbnail available** from:
+**YouTube Thumbnail Downloader GUI** is a lightweight desktop utility that downloads the best public thumbnail available for:
 
 - a single YouTube video
-- a playlist
+- a full playlist
 - Shorts links
-- live URLs
+- live links
+- embedded video links
 - shortened `youtu.be` links
 
-The application focuses on **speed, simplicity, and file organization**. It does **not download the videos** themselves: it only fetches the public thumbnail image in the best available quality.
+The app does not download video files. It only fetches the public thumbnail image exposed by YouTube in the best format and quality it can find.
 
 ## Features
 
-- Modern desktop interface with a clean dark theme
-- Supports **Auto**, **Single Video**, and **Playlist** modes
-- Detects the URL type automatically when possible
-- Downloads the **best available thumbnail** in priority order:
+- Modern Tkinter desktop interface
+- `Auto`, `Single video`, and `Playlist` modes
+- Automatic URL type detection when `Auto` is selected
+- Best-thumbnail fallback order:
   - `maxresdefault`
   - `sddefault`
   - `hqdefault`
   - `mqdefault`
   - `default`
-- Prioritizes modern image formats when available:
+- Format priority:
   - `webp`
   - `jpg`
-- Real-time progress bar and processing status
-- Integrated log panel
-- Download statistics:
+- Real-time progress bar and status text
+- Live log panel
+- Download counters:
   - total
   - processed
   - downloaded
   - skipped
 - Optional overwrite mode
-- Optional automatic folder opening when finished
-- Clean file naming with video ID included
-- Playlist thumbnails stored in a dedicated subfolder
-
-## Why this project is useful
-
-This tool is useful for:
-
-- content creators who want channel or video thumbnails quickly
-- designers collecting visual references
-- archivists documenting playlists
-- developers who need a lightweight YouTube thumbnail utility
-- users who want a **GUI alternative** instead of command-line scripts
+- Optional automatic folder opening when the job finishes
+- Clean filenames with the YouTube video ID included
+- Playlist items stored in a dedicated subfolder with numbered filenames
+- Clean stop handling for long playlist jobs
 
 ## Screenshots
 
 <p align="center">
-  <img src="assets/AppPreviewV0.4.1.gif" alt="Main interface screenshot" width="90%">
+  <img src="assets/AppPreviewV0.4.1.gif" alt="Application preview" width="90%">
 </p>
 
-## Project structure
+## Project Structure
 
 ```text
 .
-├── script.py
-├── README.md
+├── assets/
+│   ├── AppPreviewV0.4.1.gif
+│   └── AppPreviewV0.4.1.png
 ├── CHANGELOG.txt
 ├── LICENSE
-├── .gitignore
-├── requirements.txt
-└── assets/
-    ├── social-preview.png
-    └── screenshot-main.png
-```
-.
+├── readme.md
 ├── script.py
-├── README.md
-├── CHANGELOG.txt
-├── LICENSE
-├── .gitignore
-├── requirements.txt
-└── assets/
-    ├── social-preview.png
-    └── screenshot-main.png
+└── script.spec
 ```
 
 ## Installation
 
 ### Requirements
 
-- Python **3.11+** recommended
+- Python 3.10 or newer
 - `tkinter`
 - `requests`
 - `yt-dlp`
 
-### Clone the repository
+Notes:
 
-```bash
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/<REPO_NAME>.git
-cd <REPO_NAME>
-```
-
-### Install dependencies
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Or manually:
-
-```bash
-python -m pip install -U requests yt-dlp
-### Requirements
-
-- Python **3.11+** recommended
-- `tkinter`
-- `requests`
-- `yt-dlp`
+- Python 3.11+ is recommended.
+- On Windows, `tkinter` is usually included with the official Python installer.
+- On some Linux distributions, you may need to install a package such as `python3-tk` separately.
 
 ### Clone the repository
 
 ```bash
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/<REPO_NAME>.git
-cd <REPO_NAME>
+git clone https://github.com/PanzerSniper/youtube-thumbnail-downloader-gui.git
+cd youtube-thumbnail-downloader-gui
 ```
 
 ### Install dependencies
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Or manually:
 
 ```bash
 python -m pip install -U requests yt-dlp
@@ -158,88 +114,52 @@ python -m pip install -U requests yt-dlp
 
 ## Usage
 
-Run the application:
-## Usage
+Run the app:
 
-Run the application:
-
-```bash
 ```bash
 python script.py
 ```
 
 Then:
 
-1. Paste a YouTube URL
-2. Select a mode:
-   - `Auto`
-   - `Vidéo unique`
-   - `Playlist`
-3. Choose an output folder
-4. Click **Lancer**
+1. Paste a YouTube URL.
+2. Select a mode: `Auto`, `Single video`, or `Playlist`.
+3. Choose an output folder.
+4. Click `Start`.
 
-## Supported YouTube URLs
+Default output folder:
+
+```text
+thumbnails_best/
+```
+
+If `Auto` cannot determine the URL type, switch to `Single video` or `Playlist` manually.
+
+## Supported URLs
 
 - `https://www.youtube.com/watch?v=...`
 - `https://youtu.be/...`
 - `https://www.youtube.com/shorts/...`
 - `https://www.youtube.com/live/...`
+- `https://www.youtube.com/embed/...`
 - `https://www.youtube.com/playlist?list=...`
+- `https://m.youtube.com/...`
+- `https://music.youtube.com/...`
 
-## Output examples
+## Output Examples
 
-### Single video
+### Single Video
 
 ```text
-My chosen folder/
-└── Amazing Video Title [VIDEO_ID].webp
+MyFolder/
+└── Video Title [VIDEO_ID].webp
 ```
 
 ### Playlist
 
 ```text
-My chosen folder/
-└── Playlist Name/
-    ├── 001 - First Video Title [VIDEO_ID].webp
-    ├── 002 - Second Video Title [VIDEO_ID].jpg
-    └── 003 - Third Video Title [VIDEO_ID].webp
-```
-
-## Build a Windows `.exe`
-
-Install PyInstaller:
-Then:
-
-1. Paste a YouTube URL
-2. Select a mode:
-   - `Auto`
-   - `Vidéo unique`
-   - `Playlist`
-3. Choose an output folder
-4. Click **Lancer**
-
-## Supported YouTube URLs
-
-- `https://www.youtube.com/watch?v=...`
-- `https://youtu.be/...`
-- `https://www.youtube.com/shorts/...`
-- `https://www.youtube.com/live/...`
-- `https://www.youtube.com/playlist?list=...`
-
-## Output examples
-
-### Single video
-
-```text
-My chosen folder/
-└── Amazing Video Title [VIDEO_ID].webp
-```
-
-### Playlist
-
-```text
-My chosen folder/
-└── Playlist Name/
+MyFolder/
+└── Playlist Title/
     ├── 001 - First Video Title [VIDEO_ID].webp
     ├── 002 - Second Video Title [VIDEO_ID].jpg
     └── 003 - Third Video Title [VIDEO_ID].webp
@@ -249,102 +169,39 @@ My chosen folder/
 
 Install PyInstaller:
 
-```bash
 ```bash
 python -m pip install -U pyinstaller
 ```
 
-Build:
-Build:
+Build with the included spec file:
 
 ```bash
-```bash
-pyinstaller --onefile --windowed script.py
+pyinstaller script.spec
 ```
 
-Generated executable:
-Generated executable:
+The generated executable is written to:
 
 ```text
 dist/script.exe
-dist/script.exe
 ```
 
+If you want a custom executable name, edit the `name=` field in `script.spec` before building.
+
 ## Changelog
 
-See the full history in [`CHANGELOG.txt`](./CHANGELOG.txt).
+Version history is available in [`CHANGELOG.txt`](./CHANGELOG.txt).
 
-## Roadmap
-
-- Add thumbnail preview before download
-- Add multilingual interface
-- Add drag-and-drop URL support
-- Add export of download report
-- Add custom file naming templates
-- Add batch URL processing
-- Add optional update checker
+Current latest version documented in the project: `0.4.1`
 
 ## Contributing
 
-Suggestions, bug reports, and improvements are welcome.
-
-If you want to contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a pull request
+Issues, bug reports, and pull requests are welcome.
 
 ## License
 
-This project is distributed under the **MIT License**.
-
-## Keywords
-
-YouTube thumbnail downloader, YouTube thumbnail downloader GUI, Python YouTube thumbnail app, yt-dlp GUI, YouTube playlist thumbnail downloader, YouTube maxres thumbnail downloader, desktop thumbnail downloader, Tkinter YouTube downloader.
+This project is released under the **MIT License**. See [`LICENSE`](./LICENSE).
 
 ## Author
 
-Replace this section with your name, links, and contact information:
-
-- GitHub: `https://github.com/<YOUR_GITHUB_USERNAME>`
-- Project: `https://github.com/<YOUR_GITHUB_USERNAME>/<REPO_NAME>`
-## Changelog
-
-See the full history in [`CHANGELOG.txt`](./CHANGELOG.txt).
-
-## Roadmap
-
-- Add thumbnail preview before download
-- Add multilingual interface
-- Add drag-and-drop URL support
-- Add export of download report
-- Add custom file naming templates
-- Add batch URL processing
-- Add optional update checker
-
-## Contributing
-
-Suggestions, bug reports, and improvements are welcome.
-
-If you want to contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a pull request
-
-## License
-
-This project is distributed under the **MIT License**.
-
-## Keywords
-
-YouTube thumbnail downloader, YouTube thumbnail downloader GUI, Python YouTube thumbnail app, yt-dlp GUI, YouTube playlist thumbnail downloader, YouTube maxres thumbnail downloader, desktop thumbnail downloader, Tkinter YouTube downloader.
-
-## Author
-
-Replace this section with your name, links, and contact information:
-
-- GitHub: `https://github.com/<YOUR_GITHUB_USERNAME>`
-- Project: `https://github.com/<YOUR_GITHUB_USERNAME>/<REPO_NAME>`
+- GitHub: [PanzerSniper](https://github.com/PanzerSniper)
+- Repository: [youtube-thumbnail-downloader-gui](https://github.com/PanzerSniper/youtube-thumbnail-downloader-gui)
